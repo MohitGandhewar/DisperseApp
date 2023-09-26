@@ -3,6 +3,7 @@ import "./DisperseValidator.css";
 
 const DisperseValidator = () => {
   const [duplicate, setduplicate] = useState(false);
+  const [nextButton, setNextButton] = useState(false);
   const [inputLines, setInputLines] = useState("");
 
   const [addressMap, setAddressMap] = useState(new Map());
@@ -11,73 +12,78 @@ const DisperseValidator = () => {
   function removeDuplicate(callBack) {
     // Split the input into lines
     const lines = inputLines;
-  
+
     // Create a set to store unique lines
     const uniqueLines = new Map();
-  
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const parts = line.split(/[\s,=]/);
-  
+
       // Add the first occurrence of each address to the set
       if (!uniqueLines.has(parts[0])) {
-          uniqueLines.set(parts[0],line);
+        uniqueLines.set(parts[0], line);
       }
     }
-  
+
     // Convert the set back to an array
-    const updatedLines = Array.from(uniqueLines, ([key,value]) => `${value}`);
+    const updatedLines = Array.from(uniqueLines, ([key, value]) => `${value}`);
     // Update the input box text
     const updatedText = updatedLines.join("\n");
     document.getElementById("inputBox").value = updatedText;
     updateLineNumbers();
     callBack();
   }
- 
 
-  function combineDuplicateAmount (callBack) {
-        // Split the input into lines
-        const lines = inputLines;
-      
-        // Create a map to store addresses and their corresponding total amounts
-        const addressTotalMap = new Map();
-      
-        for (let i = 0; i < lines.length; i++) {
-          const line = lines[i];
-      
-          // Split the line into address and amount based on space, single quotation mark, or equals sign
-          const parts = line.split(/[\s,=]/);
-      
-          // Check if the address starts with "0x" and is 42 characters long
-          if (parts[0].startsWith("0x") && parts[0].length === 42) {
-            // Check if the amount is a valid number (not NaN)
-            const amount = parseFloat(!isNaN(parts[1])?parts[1]:null);
-            if (amount) {
-              // If the address is already in the map, add the amount to the existing total
-              if (addressTotalMap.has(parts[0])) {
-                addressTotalMap.set(parts[0], addressTotalMap.get(parts[0]) + amount);
-              } else {
-                // If the address is not in the map, add it with the initial amount
-                addressTotalMap.set(parts[0], amount);
-              }
-            }
+  function combineDuplicateAmount(callBack) {
+    // Split the input into lines
+    const lines = inputLines;
+
+    // Create a map to store addresses and their corresponding total amounts
+    const addressTotalMap = new Map();
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Split the line into address and amount based on space, single quotation mark, or equals sign
+      const parts = line.split(/[\s,=]/);
+
+      // Check if the address starts with "0x" and is 42 characters long
+      if (parts[0].startsWith("0x") && parts[0].length === 42) {
+        // Check if the amount is a valid number (not NaN)
+        const amount = parseFloat(!isNaN(parts[1]) ? parts[1] : null);
+        if (amount) {
+          // If the address is already in the map, add the amount to the existing total
+          if (addressTotalMap.has(parts[0])) {
+            addressTotalMap.set(
+              parts[0],
+              addressTotalMap.get(parts[0]) + amount
+            );
+          } else {
+            // If the address is not in the map, add it with the initial amount
+            addressTotalMap.set(parts[0], amount);
           }
         }
-      
-        // Create an array to store the combined lines
-        // const combinedLines = addressTotalMap.map(item => `${item.key}=${item.value}`);
-        const combinedLines = Array.from(addressTotalMap, ([key, value]) => `${key}=${value}`);
-
-       
-      
-        // Update the input box text with the combined lines
-        const updatedText = combinedLines.join("\n");
-        document.getElementById("inputBox").value = updatedText;
-        updateLineNumbers();
-    callBack();
       }
+    }
+
+    // Create an array to store the combined lines
+    // const combinedLines = addressTotalMap.map(item => `${item.key}=${item.value}`);
+    const combinedLines = Array.from(
+      addressTotalMap,
+      ([key, value]) => `${key}=${value}`
+    );
+
+    // Update the input box text with the combined lines
+    const updatedText = combinedLines.join("\n");
+    document.getElementById("inputBox").value = updatedText;
+    updateLineNumbers();
+    callBack();
+  }
 
   function onSubmit() {
+    setNextButton(false);
+
     const inputBox = document.getElementById("inputBox");
     let errorMessages = document.getElementById("errorMessages");
     errorMessages.innerHTML = ""; // Clear previous error messages
@@ -89,7 +95,7 @@ const DisperseValidator = () => {
 
     // Split the input into lines
     const lines = inputBox.value.split("\n");
-  
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
 
@@ -115,7 +121,7 @@ const DisperseValidator = () => {
             parts[0],
             addressMap.get(parts[0]) + parseFloat(parts[1])
           );
-          addressLineMap.get(parts[0]).push(i + 1); 
+          addressLineMap.get(parts[0]).push(i + 1);
           // Store line numbers
         } else {
           addressMap.set(parts[0], parseFloat(parts[1]));
@@ -166,10 +172,11 @@ const DisperseValidator = () => {
     if (errorList.children.length > 0) {
       errorMessages.appendChild(errorList);
     }
-    setduplicate(duplicateAddresses.length > 0? true : false);
+    setduplicate(duplicateAddresses.length > 0 ? true : false);
 
   }
   function updateLineNumbers() {
+    setNextButton(true);
     const inputBox = document.getElementById("inputBox");
     const lineNumbers = document.getElementById("lineNumbers");
     const lines = inputBox.value.split("\n");
@@ -181,12 +188,8 @@ const DisperseValidator = () => {
   }
   useEffect(() => {
     // onSubmit();
-    },[inputLines])
-  
+  }, [inputLines]);
 
-  // Attach the onSubmit function to the "Next" button click event
-  // const nextButton = document.getElementById('nextButton');
-  // nextButton.addEventListener('click', onSubmit);
   return (
     <div className="container">
       <div className="validator">
@@ -208,20 +211,45 @@ const DisperseValidator = () => {
           <p>Seperated by ',' or ' ' or '='</p>
           <p>Show example</p>
         </div>
-        <button id="nextButton" onClick={() => onSubmit()}>
-          Next
-        </button>
         {duplicate && (
           <div className="title duplicate">
             <p>Duplicated</p>
             <div className="btn">
-              <button onClick={()=>removeDuplicate(function () {onSubmit()})}>Keep the first one</button>
+              <button
+                onClick={() =>
+                  removeDuplicate(function () {
+                    onSubmit();
+                  })
+                }
+              >
+                Keep the first one
+              </button>
               <span>|</span>
-              <button onClick={()=>combineDuplicateAmount(function () {onSubmit()})}>Combine balance</button>
+              <button
+                onClick={() =>
+                  combineDuplicateAmount(function () {
+                    onSubmit();
+                  })
+                }
+              >
+                Combine balance
+              </button>
             </div>
           </div>
         )}
         <div id="errorMessages"></div>
+
+        <button
+          className={nextButton ? "active nextButton" : "nextButton"}
+          onClick={() => {
+            if (nextButton) {
+              onSubmit();
+            }
+          }}
+        >
+          Next
+        </button>
+        
       </div>
     </div>
   );
