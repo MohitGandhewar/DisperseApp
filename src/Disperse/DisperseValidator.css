@@ -10,6 +10,7 @@
     flex-direction: column;
     justify-content: center;
     width: 70%;
+    max-width: 900px;
     margin: 0 auto;
     padding: 30px 10px;
 }
@@ -74,17 +75,17 @@
     border: none;
     border-radius: 25px;
     color: #E9DFFA;
+    cursor: default;
 }
 .nextButton.active{
     background-image:linear-gradient(to right, #C272FC , #6654CF);
+    cursor: pointer;
 }
 
 .duplicate .btn{
-    /* justify-content: center; */
     color: red;
 }
 .duplicate .btn button{
-    /* justify-content: center; */
     color: red;
     background-color: inherit;
     border: none;
