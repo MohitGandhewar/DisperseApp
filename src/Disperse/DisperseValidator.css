@@ -68,16 +68,17 @@
     top:4.6%;
     bottom: 4.6%;
 }
-#nextButton{
-    background-image:linear-gradient(to right, #C272FC , #6654CF);
+.nextButton{
+    background-image:linear-gradient(to right, #1C1F22 , #1C1F22);
     height: 50px;
     border: none;
     border-radius: 25px;
     color: #E9DFFA;
 }
-.duplicate{
-    /* justify-content: center; */
+.nextButton.active{
+    background-image:linear-gradient(to right, #C272FC , #6654CF);
 }
+
 .duplicate .btn{
     /* justify-content: center; */
     color: red;
