@@ -1,0 +1,86 @@
+
+.container{
+    background-color:#24272C;
+    height: 100vh;
+    width: 100vw;
+}
+.validator{
+    background-color:#24272C;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 70%;
+    margin: 0 auto;
+    padding: 30px 10px;
+}
+.validator .title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.validator .editorbox{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+.validator #inputBox{
+    background-color:#0F121A;
+    border: none;
+    resize: none;
+    width: 100%;
+    border-radius: 5px;
+    padding: 17px 30px;
+    /* margin-left: 40px;     */
+    padding-left: 65px;  
+    color:#f6f6f6 ;  
+    font-size: 14px;
+    line-height: 18px;
+}
+.validator .title p{
+    color: #ECEDED;
+}
+.validator .guidelies p:last-child{
+    color: #636573;
+}
+#errorMessages ul{
+    border: 1px solid red;
+    border-radius: 3px;
+    color: red;
+    list-style: none;
+}
+#lineNumbers {
+    background-color:#0F121A;
+    color: #8A8a8a;
+    width: 40px;
+    padding: 0px 8px;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: right;
+    border-right: 1px solid #ccc;
+    position: absolute;
+    top:4.6%;
+    bottom: 4.6%;
+}
+#nextButton{
+    background-image:linear-gradient(to right, #C272FC , #6654CF);
+    height: 50px;
+    border: none;
+    border-radius: 25px;
+    color: #E9DFFA;
+}
+.duplicate{
+    /* justify-content: center; */
+}
+.duplicate .btn{
+    /* justify-content: center; */
+    color: red;
+}
+.duplicate .btn button{
+    /* justify-content: center; */
+    color: red;
+    background-color: inherit;
+    border: none;
+    font-size: 14px;
+    padding: 0 10px;
+}
