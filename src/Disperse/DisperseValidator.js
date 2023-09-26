@@ -51,8 +51,8 @@ const DisperseValidator = () => {
           // Check if the address starts with "0x" and is 42 characters long
           if (parts[0].startsWith("0x") && parts[0].length === 42) {
             // Check if the amount is a valid number (not NaN)
-            const amount = parseFloat(parts[1]);
-            if (!isNaN(amount)) {
+            const amount = parseFloat(!isNaN(parts[1])?parts[1]:null);
+            if (amount) {
               // If the address is already in the map, add the amount to the existing total
               if (addressTotalMap.has(parts[0])) {
                 addressTotalMap.set(parts[0], addressTotalMap.get(parts[0]) + amount);
